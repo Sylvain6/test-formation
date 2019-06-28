@@ -1,33 +1,23 @@
 <?php
 
+namespace App\Entity;
+
 use App\Entity\Participation;
 use App\Entity\Role;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 
-class Users extends TestCase
+class UserTest extends TestCase
 {
-
-    public function __construct()
-    {
-        $role_organiser = new Role( 1, 'Organizer' );
-        $role_teacher = new Role( 2, 'Teacher' );
-        $role_student = new Role( 3, 'Strudent' );
-
-        $participation = new Participation();
-
-        $organism = new User( 'dumont.antoine27@gmail.com', 'Antoine', $role_organiser );
-        $teacher = new User( 'sylvain.coutrot@gmail.com', 'Sylvain', $role_teacher );
-        $student = new User( 'guillaume.delamare@gmail.com', 'Guillaume', $role_student );
-    }
 
     /**
      * @covers User::isValid
      */
     public function testIsValidNominal()
     {
-        $user = new User( 'dumont.antoine27@gmail.com', 'Antoine', 2 );
+        $role_student = new Role( 3, 'Student' );
+        $user = new User( 'dumont.antoine27@gmail.com', 'Antoine', $role_student );
         $result = $user->isValid();
         $this->assertTrue($result);
     }
@@ -37,7 +27,8 @@ class Users extends TestCase
      */
     public function testIsNotValidBecauseEmailFormat()
     {
-        $user = new User( 'guillaume.delamare.com', 'Guillaume', 3 );
+        $role_student = new Role( 3, 'Student' );
+        $user = new User( 'guillaume.delamare.com', 'Guillaume', $role_student );
         $result = $user->isValid();
         $this->assertFalse($result);
     }
@@ -47,7 +38,8 @@ class Users extends TestCase
      */
     public function testIsNotValidBecauseFirstnameIsInvalid()
     {
-        $user = new User( 'guillaume.delamare@gmail.com', '', 3 );
+        $role_student = new Role( 3, 'Student' );
+        $user = new User( 'guillaume.delamare@gmail.com', '', $role_student );
         $result = $user->isValid();
         $this->assertFalse($result);
     }
@@ -57,9 +49,12 @@ class Users extends TestCase
      */
     public function testIsNotValidBecauseRoleIsInvalid()
     {
-        $user = new User( 'guillaume.delamare@gmail.com', 'Guillaume', 0 );
+        $role_false = new Role( 7, 'false');
+        $user = new User( 'guillaume.delamare@gmail.com', 'Guillaume', $role_false );
         $result = $user->isValid();
         $this->assertFalse($result);
     }
+
+
 
 }

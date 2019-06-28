@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FormationRepository")
@@ -30,6 +31,8 @@ class Formation
 
     /**
      * @ORM\Column(type="datetime")
+     * 
+     * @Assert\GreaterThan("today")
      */
     private $date;
 
@@ -47,6 +50,11 @@ class Formation
      * @ORM\ManyToMany(targetEntity="App\Entity\Participation", mappedBy="formation")
      */
     private $participations;
+
+    /**
+     * @ORM\OneToMany(targetEntity="User", mappedBy="formation")
+     */
+    private $former;
 
     public function __construct()
     {

@@ -26,7 +26,7 @@ class Role
         $this->setId( $id );
         $this->setName( $name );
 
-        return $this->getId();
+        return $this;
     }
 
     public function getId(): ?int

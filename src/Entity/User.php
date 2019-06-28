@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Role;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -38,11 +39,17 @@ class User
      */
     private $participations;
 
-    public function __construct( $email, $name, $role )
+    /**
+     * @ORM\OneToMany(targetEntity="Role", mappedBy="user")
+     */
+    private $role;
+
+    public function __construct( $email, $name, Role $role )
     {
         $this->participations = new ArrayCollection();
         $this->setEmail( $email );
         $this->setName( $name );
+        $this->setRole( $role );
 
         return $this;
     }
@@ -88,6 +95,18 @@ class User
         return $this;
     }
 
+    public function getRole(): ?Role
+    {
+        return $this->role;
+    }
+
+    public function setRole(Role $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Participation[]
      */
@@ -121,7 +140,7 @@ class User
         return filter_var($this->email, FILTER_VALIDATE_EMAIL)
             && !empty($this->name)
             && !empty( $this->role )
-            && $this->role >= 1
-            && $this->role < 4;
+            && $this->getRole()->getId() >= 1
+            && $this->getRole()->getId() < 4;
     }
 }
