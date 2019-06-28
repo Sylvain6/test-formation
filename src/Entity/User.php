@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Role;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -37,6 +38,11 @@ class User
      * @ORM\ManyToMany(targetEntity="App\Entity\Participation", mappedBy="participant")
      */
     private $participations;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Role", mappedBy="user")
+     */
+    private $role;
 
     public function __construct()
     {
@@ -80,6 +86,18 @@ class User
     public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getRole(): ?Role
+    {
+        return $this->role;
+    }
+
+    public function setRole(Role $role): self
+    {
+        $this->role = $role;
 
         return $this;
     }

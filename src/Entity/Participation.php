@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ParticipationRepository")
@@ -52,15 +53,6 @@ class Participation
         return $this->participant;
     }
 
-    public function addParticipant(User $participant): self
-    {
-        if (!$this->participant->contains($participant)) {
-            $this->participant[] = $participant;
-        }
-
-        return $this;
-    }
-
     public function removeParticipant(User $participant): self
     {
         if ($this->participant->contains($participant)) {
@@ -78,13 +70,20 @@ class Participation
         return $this->formation;
     }
 
-    public function addFormation(Formation $formation): self
+    public function addParticipation(Formation $formation, User $participant): self
     {
-        if (!$this->formation->contains($formation)) {
-            $this->formation[] = $formation;
+        if ($formation->date > date("Y-m-d H:i:s")) {
+            if (!$this->participant->contains($participant)) {
+                $this->participant[] = $participant;
+            }
+            if (!$this->formation->contains($formation)) {
+                $this->formation[] = $formation;
+            }
+            return $this;
+        } else {
+            throw new \Exception('This formation already passed');
         }
 
-        return $this;
     }
 
     public function removeFormation(Formation $formation): self
