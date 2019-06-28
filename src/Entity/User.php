@@ -44,11 +44,12 @@ class User
      */
     private $role;
 
-    public function __construct( $email, $name, Role $role )
+    public function __construct( $email, $firstname, $name, Role $role )
     {
+        $this->name = $name;
+        $this->firstname = $firstname;
+        $this->email = $email;
         $this->participations = new ArrayCollection();
-        $this->setEmail( $email );
-        $this->setName( $name );
         $this->setRole( $role );
 
         return $this;
@@ -138,9 +139,8 @@ class User
     public function isValid()
     {
         return filter_var($this->email, FILTER_VALIDATE_EMAIL)
-            && !empty($this->name)
-            && !empty( $this->role )
-            && $this->getRole()->getId() >= 1
-            && $this->getRole()->getId() < 4;
+            && is_string($this->name)
+            && is_string($this->firstname)
+            && $this->role instanceof Role;
     }
 }

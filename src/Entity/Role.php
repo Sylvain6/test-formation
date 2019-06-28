@@ -21,14 +21,11 @@ class Role
      */
     private $name;
 
-    public function __construct( $id, $name )
+    public function __construct($name)
     {
-        $this->setId( $id );
-        $this->setName( $name );
-
-        return $this;
+        $this->name = $name;
     }
-
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -51,5 +48,12 @@ class Role
         $this->name = $name;
 
         return $this;
+    }
+    public function save(): bool
+    {
+        if (is_string($this->name)){
+            return true;
+        }
+        return false;
     }
 }

@@ -56,8 +56,13 @@ class Formation
      */
     private $former;
 
-    public function __construct()
+    public function __construct($subject, $duration_hour, $date, $classroom, $nb_student)
     {
+        $this->subject = $subject;
+        $this->duration_hour = $duration_hour;
+        $this->date = $date;
+        $this->classroom = $classroom;
+        $this->nb_student = $nb_student;
         $this->participations = new ArrayCollection();
     }
 
@@ -152,5 +157,28 @@ class Formation
         }
 
         return $this;
+    }
+
+    public function getFormer(): ?User
+    {
+        return $this->former;
+    }
+
+    public function setFormer(User $former): self
+    {
+        $this->former = $former;
+
+        return $this;
+    }
+
+    public function save(): bool
+    {
+        if (is_string($this->subject)
+         && is_integer($this->duration_hour) && $this->date > date("Y-m-d H:i:s")
+          && is_integer($this->classroom) && is_integer($this->nb_student)
+           && $this->former instanceof User ){
+            return true;
+        }
+        return false;
     }
 }
