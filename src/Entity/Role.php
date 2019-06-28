@@ -21,9 +21,24 @@ class Role
      */
     private $name;
 
+    public function __construct( $id, $name )
+    {
+        $this->setId( $id );
+        $this->setName( $name );
+
+        return $this->getId();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId( $id )
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): ?string

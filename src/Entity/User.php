@@ -38,9 +38,13 @@ class User
      */
     private $participations;
 
-    public function __construct()
+    public function __construct( $email, $name, $role )
     {
         $this->participations = new ArrayCollection();
+        $this->setEmail( $email );
+        $this->setName( $name );
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -110,5 +114,14 @@ class User
         }
 
         return $this;
+    }
+
+    public function isValid()
+    {
+        return filter_var($this->email, FILTER_VALIDATE_EMAIL)
+            && !empty($this->name)
+            && !empty( $this->role )
+            && $this->role >= 1
+            && $this->role < 4;
     }
 }
