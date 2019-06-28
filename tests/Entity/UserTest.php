@@ -10,14 +10,18 @@ use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 class UserTest extends TestCase
 {
+    private $role_student;
+
+    public function setUp() {
+        $this->role_student = new Role('Student');
+    }
 
     /**
      * @covers User::isValid
      */
     public function testIsValidNominal()
     {
-        $role_student = new Role( 3, 'Student' );
-        $user = new User( 'dumont.antoine27@gmail.com', 'Antoine', $role_student );
+        $user = new User( 'dumont.antoine27@gmail.com', 'Antoine', 'Dumont', $this->role_student );
         $result = $user->isValid();
         $this->assertTrue($result);
     }
@@ -27,8 +31,7 @@ class UserTest extends TestCase
      */
     public function testIsNotValidBecauseEmailFormat()
     {
-        $role_student = new Role( 3, 'Student' );
-        $user = new User( 'guillaume.delamare.com', 'Guillaume', $role_student );
+        $user = new User( 'guillaume.delamare.com', 'Guillaume', 'Dupuit', $this->role_student );
         $result = $user->isValid();
         $this->assertFalse($result);
     }
@@ -38,8 +41,7 @@ class UserTest extends TestCase
      */
     public function testIsNotValidBecauseFirstnameIsInvalid()
     {
-        $role_student = new Role( 3, 'Student' );
-        $user = new User( 'guillaume.delamare@gmail.com', '', $role_student );
+        $user = new User( 'guillaume.delamare@gmail.com', null, 'Coutrot', $this->role_student );
         $result = $user->isValid();
         $this->assertFalse($result);
     }
@@ -47,13 +49,13 @@ class UserTest extends TestCase
     /**
      * @covers User::isValid
      */
-    public function testIsNotValidBecauseRoleIsInvalid()
+    public function testIsNotValidBecauseNameIsInvalid()
     {
-        $role_false = new Role( 7, 'false');
-        $user = new User( 'guillaume.delamare@gmail.com', 'Guillaume', $role_false );
+        $user = new User( 'guillaume.delamare@gmail.com', 'Guillaupme', null, $this->role_student );
         $result = $user->isValid();
         $this->assertFalse($result);
     }
+
 
 
 

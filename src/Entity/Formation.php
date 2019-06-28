@@ -56,7 +56,7 @@ class Formation
      */
     private $former;
 
-    public function __construct($subject, $duration_hour, $date, $classroom, $nb_student)
+    public function __construct($subject, $duration_hour, $date, $classroom, $nb_student, User $former)
     {
         $this->subject = $subject;
         $this->duration_hour = $duration_hour;
@@ -64,6 +64,7 @@ class Formation
         $this->classroom = $classroom;
         $this->nb_student = $nb_student;
         $this->participations = new ArrayCollection();
+        $this->setFormer($former);
     }
 
     public function getId(): ?int
@@ -171,7 +172,7 @@ class Formation
         return $this;
     }
 
-    public function save(): bool
+    public function isValid(): bool
     {
         if (is_string($this->subject)
          && is_integer($this->duration_hour) && $this->date > date("Y-m-d H:i:s")
